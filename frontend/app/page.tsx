@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-8">
-      <h1 className="text-3xl font-bold mb-6">🎬 Catálogo</h1>
+      <h1 className="text-3xl font-bold mb-6">Catálogo</h1>
 
       <MovieCarousel
         movies={movies}
