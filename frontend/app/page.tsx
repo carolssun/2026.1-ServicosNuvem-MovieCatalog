@@ -25,9 +25,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
-      <h1 className="text-3xl font-bold mb-6">Catálogo</h1>
+      
+      <div className="w-full flex justify-center pt-10 pb-6">
+        <h1 className="text-3xl font-bold">
+          Catálogo
+        </h1>
+      </div>
 
       <MovieCarousel movies={movies} onDelete={handleDelete} />
+
     </main>
   )
 }
