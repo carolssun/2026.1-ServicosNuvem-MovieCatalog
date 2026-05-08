@@ -24,7 +24,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white p-8">
+    <main className="min-h-screen bg-zinc-950 text-white">
       <h1 className="text-3xl font-bold mb-6">Catálogo</h1>
 
       <MovieCarousel movies={movies} onDelete={handleDelete} />
