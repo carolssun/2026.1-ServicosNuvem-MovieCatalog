@@ -16,7 +16,6 @@ export default function MovieCarousel({ movies, onDelete }: Props) {
   return (
     <div className="overflow-hidden" ref={emblaRef}>
       <div className="flex gap-6">
-        {/* ADD CARD */}
         <Link
           href="/movies/new"
           className="min-w-[220px] h-[360px]

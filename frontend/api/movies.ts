@@ -1,9 +1,25 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080"
+
+async function handleResponse(res: Response) {
+  const contentType = res.headers.get("content-type")
+
+  const data =
+    contentType?.includes("application/json")
+      ? await res.json()
+      : await res.text()
+
+  if (!res.ok) {
+    console.error("API Error:", data)
+    throw new Error(typeof data === "string" ? data : "Request failed")
+  }
+
+  return data
+}
 
 export async function getMovies() {
-  const res = await fetch(`${API_URL}/movies`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch movies");
-  return res.json();
+  const res = await fetch(`${API_URL}/movies`)
+  return handleResponse(res)
 }
 
 export async function createMovie(movie: any) {
@@ -11,8 +27,9 @@ export async function createMovie(movie: any) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(movie),
-  });
-  if (!res.ok) throw new Error("Failed to create movie");
+  })
+
+  return handleResponse(res)
 }
 
 export async function updateMovie(id: number, movie: any) {
@@ -20,13 +37,15 @@ export async function updateMovie(id: number, movie: any) {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(movie),
-  });
-  if (!res.ok) throw new Error("Failed to update movie");
+  })
+
+  return handleResponse(res)
 }
 
 export async function deleteMovie(id: number) {
   const res = await fetch(`${API_URL}/movies/${id}`, {
     method: "DELETE",
-  });
-  if (!res.ok) throw new Error("Failed to delete movie");
+  })
+
+  return handleResponse(res)
 }
