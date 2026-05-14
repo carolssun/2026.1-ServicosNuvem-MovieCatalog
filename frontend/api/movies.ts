@@ -1,5 +1,8 @@
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://35.170.203.182:8080"
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+if (!API_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL is not defined")
+}
 
 async function handleResponse(res: Response) {
   const contentType = res.headers.get("content-type")
