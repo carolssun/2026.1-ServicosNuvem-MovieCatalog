@@ -1,6 +1,7 @@
 package br.mackenzie.nuvem.controllers;
 
-import br.mackenzie.nuvem.entities.*;
+import br.mackenzie.nuvem.entities.Catalog;
+import br.mackenzie.nuvem.entities.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,19 +26,19 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> findById(@PathVariable Long id) {
+    public ResponseEntity<Movie> findById(@PathVariable String id) {
         return ResponseEntity.ok(catalog.getMovie(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Movie> update(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody Movie movie) {
         return ResponseEntity.ok(catalog.updateMovieInfo(id, movie));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         catalog.deleteMovie(id);
         return ResponseEntity.noContent().build();
     }

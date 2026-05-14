@@ -17,11 +17,11 @@ public class Catalog {
         return movieRepository.save(movie);
     }
 
-    public void deleteMovie(Long id) {
+    public void deleteMovie(String id) {
         movieRepository.deleteById(id);
     }
 
-    public Movie updateMovieInfo(Long id, Movie updatedMovie) {
+    public Movie updateMovieInfo(String id, Movie updatedMovie) {
         Movie movie = getMovie(id);
 
         movie.setTitle(updatedMovie.getTitle());
@@ -37,7 +37,7 @@ public class Catalog {
         return movieRepository.save(movie);
     }
 
-    public Movie getMovie(Long id) {
+    public Movie getMovie(String id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
     }

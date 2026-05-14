@@ -1,12 +1,12 @@
 package br.mackenzie.nuvem.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "movies")
+@Document(collection = "movies")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,14 +15,12 @@ import java.time.LocalDate;
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String title;
     private String poster;
     private String genre;
 
-    @Column(length = 1000)
     private String summary;
 
     private LocalDate releaseDate;

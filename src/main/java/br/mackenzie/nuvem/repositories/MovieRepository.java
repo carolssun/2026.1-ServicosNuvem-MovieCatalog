@@ -1,7 +1,7 @@
 package br.mackenzie.nuvem.repositories;
 
 import br.mackenzie.nuvem.entities.Movie;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface MovieRepository extends JpaRepository<Movie, Long> {
+public interface MovieRepository extends MongoRepository<Movie, String> {
 }
