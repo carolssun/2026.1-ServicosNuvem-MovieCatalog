@@ -1,5 +1,5 @@
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080"
+  process.env.NEXT_PUBLIC_API_URL ?? "http://35.170.203.182:8080"
 
 async function handleResponse(res: Response) {
   const contentType = res.headers.get("content-type")
