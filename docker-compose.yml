@@ -33,7 +33,7 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: http://35.170.203.182:8080
+        NEXT_PUBLIC_API_URL: http://44.202.24.143:8080
     container_name: movie-frontend
     ports:
       - "3000:3000"
