@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Movie } from "@/types/movie"
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export default function MovieForm({ onSubmit }: Props) {
+  const router = useRouter()
+
   const [movie, setMovie] = useState<Movie>({
     title: "",
     poster: "",
@@ -33,14 +36,17 @@ export default function MovieForm({ onSubmit }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    await onSubmit(movie)
+
+    try {
+      await onSubmit(movie)
+      router.push("/")
+    } catch (error) {
+      console.error("Erro ao salvar filme:", error)
+    }
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 max-w-xl"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
       {[
         ["title", "Título"],
         ["poster", "Poster (URL)"],
