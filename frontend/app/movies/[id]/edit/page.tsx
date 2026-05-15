@@ -7,10 +7,10 @@ interface EditMoviePageProps {
 }
 
 export default async function EditMoviePage({ params }: EditMoviePageProps) {
-  const movie = await getMovie(Number(params.id))
+  const movie = await getMovie(params.id)
 
   async function handleSubmit(updatedMovie: Movie) {
-    return updateMovie(Number(params.id), updatedMovie)
+    return updateMovie(params.id, updatedMovie)
   }
 
   return (
