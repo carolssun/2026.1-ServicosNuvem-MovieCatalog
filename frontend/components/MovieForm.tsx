@@ -1,27 +1,36 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Movie } from "@/types/movie"
 
 interface Props {
+  movie?: Movie
   onSubmit: (movie: Movie) => Promise<void>
 }
 
-export default function MovieForm({ onSubmit }: Props) {
+export default function MovieForm({ movie: initialMovie, onSubmit }: Props) {
   const router = useRouter()
 
-  const [movie, setMovie] = useState<Movie>({
-    title: "",
-    poster: "",
-    genre: "",
-    summary: "",
-    releaseDate: "",
-    duration: 0,
-    ageRating: "",
-    direction: "",
-    departureDate: "",
-  })
+  const [movie, setMovie] = useState<Movie>(
+    initialMovie ?? {
+      title: "",
+      poster: "",
+      genre: "",
+      summary: "",
+      releaseDate: "",
+      duration: 0,
+      ageRating: "",
+      direction: "",
+      departureDate: "",
+    }
+  )
+
+  useEffect(() => {
+    if (initialMovie) {
+      setMovie(initialMovie)
+    }
+  }, [initialMovie])
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -31,7 +40,7 @@ export default function MovieForm({ onSubmit }: Props) {
     setMovie(prev => ({
       ...prev,
       [name]: name === "duration" ? Number(value) : value,
-    }))
+    } as Movie))
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -57,6 +66,7 @@ export default function MovieForm({ onSubmit }: Props) {
         <input
           key={name}
           name={name}
+          value={(movie as any)[name] ?? ""}
           placeholder={label}
           className="w-full p-2 rounded bg-zinc-800 text-white"
           onChange={handleChange}
@@ -65,6 +75,7 @@ export default function MovieForm({ onSubmit }: Props) {
 
       <textarea
         name="summary"
+        value={movie.summary}
         placeholder="Resumo"
         className="w-full p-2 rounded bg-zinc-800 text-white"
         onChange={handleChange}
@@ -74,12 +85,14 @@ export default function MovieForm({ onSubmit }: Props) {
         <input
           type="date"
           name="releaseDate"
+          value={movie.releaseDate}
           className="p-2 rounded bg-zinc-800 text-white w-full"
           onChange={handleChange}
         />
         <input
           type="date"
           name="departureDate"
+          value={movie.departureDate}
           className="p-2 rounded bg-zinc-800 text-white w-full"
           onChange={handleChange}
         />
@@ -88,6 +101,7 @@ export default function MovieForm({ onSubmit }: Props) {
       <input
         type="number"
         name="duration"
+        value={movie.duration}
         placeholder="Duração (min)"
         className="w-full p-2 rounded bg-zinc-800 text-white"
         onChange={handleChange}

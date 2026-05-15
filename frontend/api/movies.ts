@@ -35,7 +35,12 @@ export async function createMovie(movie: any) {
   return handleResponse(res)
 }
 
-export async function updateMovie(id: number, movie: any) {
+export async function getMovie(id: string | number) {
+  const res = await fetch(`${API_URL}/movies/${id}`)
+  return handleResponse(res)
+}
+
+export async function updateMovie(id: string | number, movie: any) {
   const res = await fetch(`${API_URL}/movies/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -45,7 +50,7 @@ export async function updateMovie(id: number, movie: any) {
   return handleResponse(res)
 }
 
-export async function deleteMovie(id: number) {
+export async function deleteMovie(id: string | number) {
   const res = await fetch(`${API_URL}/movies/${id}`, {
     method: "DELETE",
   })
