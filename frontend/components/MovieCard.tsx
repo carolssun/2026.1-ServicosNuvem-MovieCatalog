@@ -3,7 +3,7 @@ import { Movie } from "@/types/movie"
 
 interface Props {
   movie: Movie
-  onDelete?: (id: number) => void
+  onDelete?: (id: string | number) => void
 }
 
 export default function MovieCard({ movie, onDelete }: Props) {

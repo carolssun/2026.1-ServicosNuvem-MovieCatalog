@@ -21,7 +21,7 @@ export default function Home() {
     setIsLoading(false)
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id: string | number) {
     await deleteMovie(id)
     await load()
   }

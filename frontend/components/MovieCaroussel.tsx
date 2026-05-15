@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface Props {
   movies: Movie[]
-  onDelete?: (id: number) => void
+  onDelete?: (id: string | number) => void
   isLoading?: boolean
 }
 

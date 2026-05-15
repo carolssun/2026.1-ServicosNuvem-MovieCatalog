@@ -50,7 +50,7 @@ export async function updateMovie(id: string | number, movie: any) {
   return handleResponse(res)
 }
 
-export async function deleteMovie(id: number) {
+export async function deleteMovie(id: string | number) {
   const res = await fetch(`${API_URL}/movies/${id}`, {
     method: "DELETE",
   })
