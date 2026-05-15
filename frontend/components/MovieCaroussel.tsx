@@ -9,9 +9,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 interface Props {
   movies: Movie[]
   onDelete?: (id: number) => void
+  isLoading?: boolean
 }
 
-export default function MovieCarousel({ movies, onDelete }: Props) {
+export default function MovieCarousel({ movies, onDelete, isLoading }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     dragFree: true,
@@ -65,17 +66,39 @@ export default function MovieCarousel({ movies, onDelete }: Props) {
           </Link>
 
           {/* MOVIES */}
-          {movies.map((movie) => (
-            <div
-              key={movie.id}
-              className="
-                flex-[0_0_auto]
-                w-[220px] sm:w-[240px] lg:w-[260px]
-              "
-            >
-              <MovieCard movie={movie} onDelete={onDelete} />
-            </div>
-          ))}
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, index) => (
+              <div
+                key={`skeleton-${index}`}
+                className="
+                  flex-[0_0_auto]
+                  w-[220px] sm:w-[240px] lg:w-[260px]
+                "
+              >
+                <div className="min-w-[220px] h-[360px] rounded-xl overflow-hidden shadow-lg">
+                  <div className="h-64 w-full bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-700 animate-pulse" />
+                  <div className="p-4 space-y-3 bg-zinc-900">
+                    <div className="h-5 w-3/4 rounded-full bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-700 animate-pulse" />
+                    <div className="h-4 w-1/2 rounded-full bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-700 animate-pulse" />
+                    <div className="h-4 w-1/3 rounded-full bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-700 animate-pulse" />
+                    <div className="h-8 w-full rounded-full bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-700 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            movies.map((movie) => (
+              <div
+                key={movie.id}
+                className="
+                  flex-[0_0_auto]
+                  w-[220px] sm:w-[240px] lg:w-[260px]
+                "
+              >
+                <MovieCard movie={movie} onDelete={onDelete} />
+              </div>
+            ))
+          )}
 
         </div>
       </div>

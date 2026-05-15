@@ -7,15 +7,18 @@ import { Movie } from "@/types/movie"
 
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     load()
   }, [])
 
   async function load() {
+    setIsLoading(true)
     const data = await getMovies()
     console.log("MOVIES:", data)
     setMovies(data)
+    setIsLoading(false)
   }
 
   async function handleDelete(id: number) {
@@ -32,7 +35,7 @@ export default function Home() {
         </h1>
       </div>
 
-      <MovieCarousel movies={movies} onDelete={handleDelete} />
+      <MovieCarousel movies={movies} onDelete={handleDelete} isLoading={isLoading} />
 
     </main>
   )
