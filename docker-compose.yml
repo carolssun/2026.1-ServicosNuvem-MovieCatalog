@@ -1,19 +1,4 @@
 services:
-  mongodb:
-    image: mongo:7
-    container_name: movie-mongodb
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_DATABASE: nuvem
-    volumes:
-      - mongodata:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   backend:
     build: .
     container_name: movie-backend
@@ -21,9 +6,6 @@ services:
       MONGO_URI: mongodb+srv://clovitoarroyo_db_user:x64g27cWOdPi8om1@cluster0.xa8frev.mongodb.net/myapp?retryWrites=true&w=majority
     ports:
       - "8080:8080"
-    depends_on:
-      mongodb:
-        condition: service_healthy
 
   frontend:
     build:
@@ -35,6 +17,3 @@ services:
       - "3000:3000"
     depends_on:
       - backend
-
-volumes:
-  mongodata:
