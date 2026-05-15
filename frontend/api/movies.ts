@@ -35,6 +35,11 @@ export async function createMovie(movie: any) {
   return handleResponse(res)
 }
 
+export async function getMovie(id: number) {
+  const res = await fetch(`${API_URL}/movies/${id}`)
+  return handleResponse(res)
+}
+
 export async function updateMovie(id: number, movie: any) {
   const res = await fetch(`${API_URL}/movies/${id}`, {
     method: "PUT",
