@@ -1,44 +1,21 @@
 services:
-  postgres:
-    image: postgres:15
-    container_name: movie-postgres
-    environment:
-      POSTGRES_DB: movies
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   backend:
     build: .
     container_name: movie-backend
     environment:
-      DB_URL: jdbc:postgresql://postgres:5432/movies
-      DB_USER: postgres
-      DB_PASS: postgres
+      DB_URL: jdbc:postgresql://projectdatabase.cf1cjjqak9cv.us-east-1.rds.amazonaws.com:5432/movies?sslmode=require
+      DB_USER: millie
+      DB_PASS: projeto5h11
     ports:
       - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   frontend:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: http://98.93.191.57:8080
+        NEXT_PUBLIC_API_URL: http://3.86.104.121:8080
     container_name: movie-frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
-
-volumes:
-  pgdata:
