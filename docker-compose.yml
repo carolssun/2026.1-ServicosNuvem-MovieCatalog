@@ -3,7 +3,7 @@ services:
     build: .
     container_name: movie-backend
     environment:
-      DB_URL: jdbc:postgresql://projectdatabase.cf1cjjqak9cv.us-east-1.rds.amazonaws.com:5432/movies?sslmode=require
+      DB_URL: jdbc:postgresql://movies.cf1cjjqak9cv.us-east-1.rds.amazonaws.com:5432/movies?sslmode=require
       DB_USER: millie
       DB_PASS: projeto5h11
     ports:
