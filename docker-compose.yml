@@ -3,7 +3,7 @@ services:
     build: .
     container_name: movie-backend
     environment:
-      DB_URL: jdbc:postgresql://movies.cf1cjjqak9cv.us-east-1.rds.amazonaws.com:5432/movies?sslmode=require
+      DB_URL: jdbc:postgresql://database-1.cluster-c06eqc3l7dn4.us-east-1.rds.amazonaws.com:5432/postgres?sslmode=require
       DB_USER: millie
       DB_PASS: projeto5h11
     ports:
@@ -13,7 +13,7 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: http://44.206.251.163:8080
+        NEXT_PUBLIC_API_URL: http://67.202.5.225:8080
     container_name: movie-frontend
     ports:
       - "3000:3000"
