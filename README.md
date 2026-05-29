@@ -9,8 +9,7 @@
 1. 10436919 - Antonio Francisco Lacerda Pereira - Configuração e modelagem do banco de dados Aurora PostgreSQL
 2. 10386494 - Carolina Sun R. N. Castilho -  Suporte à Infraestrutura AWS EC2/ Frontend / Documentação e Modelagem
 3. 10395595 - Clovis Julião Arroyo Neto - Suporte à Infraestrutura AWS Lambda / Backend / API Gateway
-4. 10443653 - Millie Talala Zogheib - Infraestrutura AWS EC2 e Lambda / Frontend /  Backend / Dockerização 
-5. RA - Nome - Documentação / Testes
+4. 10443653 - Millie Talala Zogheib - Infraestrutura AWS EC2 e Lambda / Frontend /  Backend / Dockerização / Documentação
 
 ---
 
