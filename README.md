@@ -1,14 +1,39 @@
-# Projeto Integrador – Cloud Developing 2026/1
+# Projeto Integrador – Cloud Developing 2025/1
 
 > CRUD simples + API Gateway + Lambda `/report` + RDS + Front
 
-## Grupo
+---
 
-1. RA - Carolina Sun - Infraestrutura AWS / Frontend
-2. RA - Nome - Backend / API
-3. RA - Nome - Banco de Dados
-4. RA - Nome - Dockerização / Deploy
+# Grupo
+
+1. 10436919 - Antonio Francisco Lacerda Pereira - Configuração e modelagem do banco de dados Aurora PostgreSQL
+2. 10386494 - Carolina Sun R. N. Castilho -  Suporte à Infraestrutura AWS EC2/ Frontend / Documentação e Modelagem
+3. 10395595 - Clovis Julião Arroyo Neto - Suporte à Infraestrutura AWS Lambda / Backend / API Gateway
+4. 10443653 - Millie Talala Zogheib - Infraestrutura AWS EC2 e Lambda / Frontend /  Backend / Dockerização 
 5. RA - Nome - Documentação / Testes
+
+---
+
+# Sumário
+
+* [1. Visão geral](#1-visão-geral)
+* [2. Arquitetura](#2-arquitetura)
+* [3. Diagrama da Arquitetura](#3-diagrama-da-arquitetura)
+* [4. Diagrama do Banco de Dados](#4-diagrama-do-banco-de-dados)
+* [5. Diagrama de Domínio](#5-diagrama-de-domínio)
+* [6. Como rodar localmente](#6-como-rodar-localmente)
+* [7. Estrutura do projeto](#7-estrutura-do-projeto)
+* [8. Infraestrutura AWS](#8-infraestrutura-aws)
+* [9. Banco de dados](#9-banco-de-dados)
+* [10. Backend](#10-backend)
+* [11. Frontend](#11-frontend)
+* [12. API Gateway](#12-api-gateway)
+* [13. AWS Lambda](#13-aws-lambda)
+* [14. Segurança](#14-segurança)
+* [15. Fluxo da aplicação](#15-fluxo-da-aplicação)
+* [16. Tecnologias utilizadas](#16-tecnologias-utilizadas)
+* [17. Objetivo acadêmico](#17-objetivo-acadêmico)
+* [18. Licença](#18-licença)
 
 ---
 
@@ -48,7 +73,161 @@ O projeto foi desenvolvido com foco na aplicação prática de conceitos de comp
 
 ---
 
-# 3. Como rodar localmente
+# 3. Diagrama da Arquitetura
+
+```mermaid
+flowchart TD
+
+    User[Usuário / Navegador]
+
+    subgraph AWS["AWS Cloud"]
+        
+        subgraph VPC["VPC"]
+            
+            subgraph PublicSubnet["Subnet Pública"]
+                
+                APIGW[API Gateway]
+
+                EC2[EC2 + Docker]
+
+                Frontend[Frontend Container]
+
+                Backend[Backend Container]
+
+            end
+
+            subgraph PrivateSubnet["Subnets Privadas"]
+
+                RDS[(Aurora PostgreSQL)]
+
+            end
+
+            Lambda[AWS Lambda /report]
+
+        end
+
+    end
+
+    User --> Frontend
+
+    Frontend --> APIGW
+
+    APIGW --> Backend
+
+    APIGW --> Lambda
+
+    Backend --> RDS
+
+    Lambda --> Backend
+```
+
+---
+
+# 4. Diagrama do Banco de Dados
+
+```mermaid
+erDiagram
+
+    MOVIES {
+
+        int id PK
+        varchar title
+        varchar genre
+        int duration
+        int release_year
+        varchar director
+        timestamp created_at
+
+    }
+```
+
+## Estrutura da tabela `MOVIES`
+
+| Campo        | Tipo      | Descrição           |
+| ------------ | --------- | ------------------- |
+| id           | int       | Identificador único |
+| title        | varchar   | Nome do filme       |
+| genre        | varchar   | Gênero do filme     |
+| duration     | int       | Duração em minutos  |
+| release_year | int       | Ano de lançamento   |
+| director     | varchar   | Diretor do filme    |
+| created_at   | timestamp | Data de criação     |
+
+---
+
+# 5. Diagrama de Domínio
+
+```mermaid
+classDiagram
+
+    class Movie {
+        +int id
+        +string title
+        +string genre
+        +int duration
+        +int releaseYear
+        +string director
+        +Date createdAt
+    }
+
+    class MovieController {
+        +createMovie()
+        +getMovies()
+        +updateMovie()
+        +deleteMovie()
+    }
+
+    class MovieService {
+        +createMovie()
+        +listMovies()
+        +updateMovie()
+        +removeMovie()
+        +generateStatistics()
+    }
+
+    class MovieRepository {
+        +save()
+        +findAll()
+        +findById()
+        +update()
+        +delete()
+    }
+
+    class ReportLambda {
+        +generateReport()
+    }
+
+    class APIGateway {
+        +routeCRUD()
+        +routeReport()
+    }
+
+    class Frontend {
+        +fetchMovies()
+        +createMovie()
+        +updateMovie()
+        +deleteMovie()
+        +showReport()
+    }
+
+    Frontend --> APIGateway : HTTP Requests
+
+    APIGateway --> MovieController : CRUD Routes
+
+    APIGateway --> ReportLambda : /report
+
+    MovieController --> MovieService
+
+    MovieService --> MovieRepository
+
+    MovieRepository --> Movie : manipula
+
+    ReportLambda --> MovieService : consome API
+```
+
+---
+
+# 6. Como rodar localmente
 
 ## Pré-requisitos
 
@@ -108,7 +287,7 @@ http://localhost:8080
 
 ---
 
-# 4. Estrutura do projeto
+# 7. Estrutura do projeto
 
 ```bash
 movie-catalog/
@@ -136,9 +315,9 @@ movie-catalog/
 
 ---
 
-# 5. Infraestrutura AWS
+# 8. Infraestrutura AWS
 
-Toda a infraestrutura foi criada dentro de uma Virtual Private Cloud (VPC), garantindo isolamento lógico e maior segurança da aplicação. 
+Toda a infraestrutura foi criada dentro de uma Virtual Private Cloud (VPC), garantindo isolamento lógico e maior segurança da aplicação.
 
 ## Componentes utilizados
 
@@ -155,7 +334,7 @@ Toda a infraestrutura foi criada dentro de uma Virtual Private Cloud (VPC), gara
 
 ---
 
-# 6. Banco de dados
+# 9. Banco de dados
 
 O banco de dados foi implementado utilizando Amazon Aurora PostgreSQL Compatible.
 
@@ -165,41 +344,6 @@ O banco de dados foi implementado utilizando Amazon Aurora PostgreSQL Compatible
 * Serviço gerenciado
 * Backups automáticos
 * Alta disponibilidade
-
-  ## Diagrama de Domínio
-
-```mermaid
-classDiagram
-direction LR
-
-class Movie {
-  +title
-  +poster
-  +genre
-  +summary
-  +releaseDate
-  +duration
-  +ageRating
-  +direction
-  +departureDate
-}
-
-class Catalog {
-  +movies : Movie[]
-  +addMovie()
-  +deleteMovie()
-  +updateMovieInfo()
-  +getMovie()
-}
-
-Catalog *-- Movie
-```
-## Modelo Entidade-Relacionamento
-
-<img width="690" height="602" alt="image" src="https://github.com/user-attachments/assets/99bd92a0-e066-459d-bb9b-7a317f5aa9ca" />
-
-<hr>
-
 
 ## Segurança
 
@@ -211,7 +355,7 @@ O banco:
 
 ---
 
-# 7. Backend
+# 10. Backend
 
 O backend implementa um CRUD para gerenciamento do catálogo de filmes.
 
@@ -238,7 +382,7 @@ Responsáveis pelo acesso ao banco de dados.
 
 ---
 
-# 8. Frontend
+# 11. Frontend
 
 O frontend consome a API utilizando requisições HTTP assíncronas.
 
@@ -254,7 +398,7 @@ As operações do frontend refletem diretamente as rotas disponíveis no backend
 
 ---
 
-# 9. API Gateway
+# 12. API Gateway
 
 O Amazon API Gateway foi utilizado como camada central de entrada da aplicação.
 
@@ -282,7 +426,7 @@ A rota `/report` está integrada diretamente à função AWS Lambda responsável
 
 ---
 
-# 10. AWS Lambda
+# 13. AWS Lambda
 
 A função Lambda consome os dados da API do backend e gera estatísticas em formato JSON.
 
@@ -300,7 +444,7 @@ A função Lambda consome os dados da API do backend e gera estatísticas em for
 
 ---
 
-# 11. Segurança
+# 14. Segurança
 
 A aplicação utiliza mecanismos de segurança tanto em nível de infraestrutura quanto em nível de aplicação.
 
@@ -318,35 +462,48 @@ As credenciais do banco são armazenadas via variáveis de ambiente e injetadas 
 
 ---
 
-# 12. Limitações atuais
+# 15. Fluxo da aplicação
 
-A solução atual possui algumas limitações:
+```mermaid
+sequenceDiagram
 
-* Frontend e backend executando na mesma EC2
-* Ausência de Auto Scaling
-* Ausência de Load Balancer
-* Deploy manual
-* Sem CI/CD
-* Sem autenticação de usuários
-* Sem monitoramento avançado
+    participant U as Usuário
+    participant F as Frontend
+    participant G as API Gateway
+    participant B as Backend
+    participant DB as Aurora PostgreSQL
+    participant L as Lambda
+
+    U->>F: Acessa aplicação
+
+    F->>G: Requisição HTTP
+
+    G->>B: Encaminha CRUD
+
+    B->>DB: Consulta/Atualiza dados
+
+    DB-->>B: Retorna dados
+
+    B-->>F: Resposta JSON
+
+    F-->>U: Atualiza interface
+
+    U->>G: GET /report
+
+    G->>L: Invoca Lambda
+
+    L->>B: Consome API
+
+    B-->>L: Retorna filmes
+
+    L-->>G: Estatísticas JSON
+
+    G-->>U: Resposta do relatório
+```
 
 ---
 
-# 13. Possíveis evoluções
-
-Como melhorias futuras:
-
-* Separação frontend/backend em instâncias distintas
-* Uso de Application Load Balancer
-* Auto Scaling Groups
-* ECS/EKS
-* Pipeline CI/CD
-* Sistema de autenticação
-* Observabilidade e monitoramento
-
----
-
-# 14. Tecnologias utilizadas
+# 16. Tecnologias utilizadas
 
 ## Cloud
 
@@ -375,7 +532,7 @@ Como melhorias futuras:
 
 ---
 
-# 15. Objetivo acadêmico
+# 17. Objetivo acadêmico
 
 O projeto foi desenvolvido com finalidade acadêmica para demonstrar conhecimentos relacionados a:
 
@@ -389,6 +546,6 @@ O projeto foi desenvolvido com finalidade acadêmica para demonstrar conheciment
 
 ---
 
-# 16. Licença
+# 18. Licença
 
 Este projeto possui finalidade exclusivamente educacional e acadêmica.
